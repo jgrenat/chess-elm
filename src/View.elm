@@ -1,7 +1,7 @@
 module View exposing (view)
 
 import Dict
-import Html exposing (Html, div, img, text)
+import Html exposing (Html, button, div, img, text)
 import Html.Attributes exposing (class, draggable, src)
 import Html.Events exposing (on, onClick, onMouseDown, onMouseUp, preventDefaultOn)
 import Json.Decode exposing (succeed)
@@ -13,6 +13,9 @@ view model =
     div []
         [ div [ class "mt4 flex justify-center" ]
             [ renderBoard model
+            ]
+        , div [ class "mt4 flex justify-center" ]
+            [ button [ onClick CancelLastMove ] [ text "Cancel last move" ]
             ]
         ]
 

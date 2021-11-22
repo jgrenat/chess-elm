@@ -12,7 +12,7 @@ init =
     , boardWithoutPossibleMoves = startingBoard
     , turn = White
     , beingDragged = Nothing
-    , previousMove = Nothing
+    , history = []
     }
 
 
@@ -57,14 +57,32 @@ update msg model =
                 Nothing ->
                     model
 
-                Just ( piece, currentIndex ) ->
+                Just ( piece, _ ) ->
                     { model
                         | beingDragged = Nothing
                         , board = updatedBoard
                         , boardWithoutPossibleMoves = updatedBoard
                         , turn = oppositeTeam piece.team
-                        , previousMove = Just ( piece, currentIndex, targetIndex )
+                        , history =
+                            { board = model.boardWithoutPossibleMoves
+                            , turn = model.turn
+                            }
+                                :: model.history
                     }
+
+        CancelLastMove ->
+            case model.history of
+                previousEntry :: otherEntries ->
+                    { model
+                        | beingDragged = Nothing
+                        , board = previousEntry.board
+                        , boardWithoutPossibleMoves = previousEntry.board
+                        , turn = previousEntry.turn
+                        , history = otherEntries
+                    }
+
+                [] ->
+                    model
 
 
 oppositeTeam : Team -> Team

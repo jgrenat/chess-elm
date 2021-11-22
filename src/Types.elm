@@ -9,7 +9,13 @@ type alias Model =
     , boardWithoutPossibleMoves : Board
     , turn : Team
     , beingDragged : Maybe ( Piece, Int )
-    , previousMove : Maybe ( Piece, Int, Int )
+    , history : List HistoryEntry
+    }
+
+
+type alias HistoryEntry =
+    { board : Board
+    , turn : Team
     }
 
 
@@ -59,3 +65,4 @@ type Msg
     | DragEnd
     | DragOver
     | Drop Int
+    | CancelLastMove
